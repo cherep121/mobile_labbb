@@ -113,6 +113,118 @@ fun task5() {
     println()
 }
 
+// 6. Произведение, min и max
+fun task6() {
+    val array = intArrayOf(2, 3, 4, 5)
+
+    var productFor = 1
+    var minFor = array[0]
+    var maxFor = array[0]
+    for (value in array) {
+        productFor *= value
+        if (value < minFor) minFor = value
+        if (value > maxFor) maxFor = value
+    }
+
+    var productWhile = 1
+    var minWhile = array[0]
+    var maxWhile = array[0]
+    var i = 0
+    while (i < array.size) {
+        productWhile *= array[i]
+        if (array[i] < minWhile) minWhile = array[i]
+        if (array[i] > maxWhile) maxWhile = array[i]
+        i++
+    }
+
+    var productForEach = 1
+    var minForEach = array[0]
+    var maxForEach = array[0]
+    array.forEach { value ->
+        productForEach *= value
+        if (value < minForEach) minForEach = value
+        if (value > maxForEach) maxForEach = value
+    }
+
+    val productReduce = array.reduce { acc, value -> acc * value }
+    val minFunction = array.min()
+    val maxFunction = array.max()
+
+    println("Массив: ${array.joinToString()}")
+    println("for: product=$productFor, min=$minFor, max=$maxFor")
+    println("while: product=$productWhile, min=$minWhile, max=$maxWhile")
+    println("forEach: product=$productForEach, min=$minForEach, max=$maxForEach")
+    println("reduce(): product=$productReduce")
+    println("min()/max(): min=$minFunction, max=$maxFunction")
+}
+
+// 7. Квадратное уравнение
+fun sqr(n: Double): Double = n * n
+
+fun discriminant(a: Double, b: Double, c: Double): Double =
+    sqr(b) - 4.0 * a * c
+
+fun rootsNumber(a: Double, b: Double, c: Double): Int {
+    return when {
+        discriminant(a, b, c) > 0 -> 2
+        discriminant(a, b, c) == 0.0 -> 2
+        else -> 0
+    }
+}
+
+fun quadraticRoot(a: Double, b: Double, c: Double) {
+    require(a != 0.0) { "Коэффициент a не должен быть равен 0." }
+
+    val d = discriminant(a, b, c)
+
+    when {
+        d > 0 -> {
+            val x1 = (-b + sqrt(d)) / (2.0 * a)
+            val x2 = (-b - sqrt(d)) / (2.0 * a)
+            println("Два различных корня:")
+            println("x1 = $x1")
+            println("x2 = $x2")
+        }
+        d == 0.0 -> {
+            val x = -b / (2.0 * a)
+            println("Два совпадающих (кратных) корня:")
+            println("x1 = $x")
+            println("x2 = $x")
+        }
+        else -> println("Действительных корней нет")
+    }
+}
+
+fun task7() {
+    print("Введите a, b, c через пробел: ")
+    val (a, b, c) = readln().trim().split(Regex("\\s+")).map { it.toDouble() }
+
+    println("sqr(b) = ${sqr(b)}")
+    println("Дискриминант = ${discriminant(a, b, c)}")
+    println("Количество корней = ${rootsNumber(a, b, c)}")
+    quadraticRoot(a, b, c)
+}
+
+// 8. Класс с массивом
+class NumberArray(private val array: IntArray) {
+    fun sumPositive(): Int = array.filter { it > 0 }.sum()
+
+    fun product(): Long {
+        var result = 1L
+        for (value in array) result *= value
+        return result
+    }
+
+    fun average(): Double = array.average()
+}
+
+fun task8() {
+    val obj = NumberArray(intArrayOf(-2, 3, 4, -1, 5))
+    println("Сумма положительных: ${obj.sumPositive()}")
+    println("Произведение: ${obj.product()}")
+    println("Среднее арифметическое: ${obj.average()}")
+}
+
 fun main() {
     println("Лабораторная работа №0: Основы Kotlin")
     println("Выберите задание 1-10:")
