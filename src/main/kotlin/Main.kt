@@ -225,6 +225,74 @@ fun task8() {
     println("Среднее арифметическое: ${obj.average()}")
 }
 
+// 9. Вектор в трехмерном пространстве
+class Vector(val x: Double, val y: Double, val z: Double) {
+    fun length(): Double = sqrt(sqr(x) + sqr(y) + sqr(z))
+
+    fun scalarProduct(other: Vector): Double =
+        x * other.x + y * other.y + z * other.z
+
+    infix fun dot(other: Vector): Double = scalarProduct(other)
+
+    operator fun times(other: Vector): Double = scalarProduct(other)
+
+    override fun toString(): String = "Vector($x, $y, $z)"
+}
+
+fun scalarProduct(v1: Vector, v2: Vector): Double = v1.scalarProduct(v2)
+
+fun task9() {
+    val v1 = Vector(1.0, 2.0, 3.0)
+    val v2 = Vector(3.0, 2.0, 1.0)
+
+    println("v1 = $v1")
+    println("Длина v1 = ${v1.length()}")
+    println("v2 = $v2")
+    println("Длина v2 = ${v2.length()}")
+    println("Скалярное произведение методом = ${v1.scalarProduct(v2)}")
+    println("Скалярное произведение infix = ${v1 dot v2}")
+    println("Скалярное произведение через * = ${v1 * v2}")
+    println("Скалярное произведение внешней функцией = ${scalarProduct(v1, v2)}")
+}
+
+// 10. Vehicle и наследники
+open class Vehicle(
+    open val speed: Int = 0,
+    open val name: String = "Транспортное средство"
+) {
+    open fun start() {
+        println("$name начал движение со скоростью $speed км/ч")
+    }
+
+    open fun stop() {
+        println("$name остановился")
+    }
+}
+
+class Boat(
+    override val speed: Int = 30,
+    override val name: String = "Лодка"
+) : Vehicle(speed, name)
+
+class Airplane(
+    override val speed: Int = 800,
+    override val name: String = "Самолет"
+) : Vehicle(speed, name)
+
+class Tank(
+    override val speed: Int = 60,
+    override val name: String = "Танк"
+) : Vehicle(speed, name)
+
+fun task10() {
+    val vehicles: List<Vehicle> = listOf(Boat(), Airplane(), Tank())
+
+    vehicles.forEach {
+        it.start()
+        it.stop()
+    }
+}
+
 fun main() {
     println("Лабораторная работа №0: Основы Kotlin")
     println("Выберите задание 1-10:")
